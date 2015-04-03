@@ -1,0 +1,35 @@
+# https://bbs.archlinux.org/viewtopic.php?id=142377
+
+[general]
+# List of accounts to be synced, separated by a comma.
+accounts = ebellani
+pythonfile = ~/.offlineimap.py
+
+[Account ebellani]
+# Identifier for the local repository; e.g. the maildir to be synced via IMAP.
+localrepository = ebellani-local
+# Identifier for the remote repository; i.e. the actual IMAP, usually non-local.
+remoterepository = ebellani-remote
+# Status cache. Default is plain, which eventually becomes huge and slow.
+status_backend = sqlite
+
+[Repository ebellani-local]
+type = Maildir
+localfolders = ~/Mail/ebellani
+sep = .
+restoreatime = no
+maxconnections = 5
+nametrans = lambda folder: re.sub('sent', '[Gmail].Sent Mail',
+                           re.sub('starred', '[Gmail].Starred',
+                           re.sub('important', '[Gmail].Important', folder)))
+
+[Repository ebellani-remote]
+type = Gmail
+ssl = yes
+remoteuser = ebellani@gmail.com
+remotepasseval = get_password_emacs("imap.gmail.com", "ebellani@gmail.com", "993")
+realdelete = no
+maxconnections = 5
+nametrans = lambda folder: re.sub('.*Sent Mail$', 'sent',
+                           re.sub('.*Starred$', 'starred',
+                           re.sub('.*Important$', 'important', folder)))
