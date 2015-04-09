@@ -30,6 +30,8 @@ remoteuser = ebellani@gmail.com
 remotepasseval = get_password_emacs("imap.gmail.com", "ebellani@gmail.com", "993")
 realdelete = no
 maxconnections = 5
+holdconnectionopen = true
+keepalive = 60
 nametrans = lambda folder: re.sub('.*Sent Mail$', 'sent',
                            re.sub('.*Starred$', 'starred',
                            re.sub('.*Important$', 'important', folder)))
